@@ -1,0 +1,23 @@
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <!-- Columna vacía para poner las imágenes -->
+            <th></th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Units in Stock</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for(p of products; track $index) {
+        <tr>
+            <td class="align-middle"><img src="{{p.imageUrl}}" alt="Placeholder Image" height="50"></td>
+            <td class="align-middle">{{p.name}}</td>
+            <td class="align-middle">{{p.unitPrice}}</td>
+            <td class="align-middle">{{p.unitsInStock}}</td>
+        </tr>
+
+        }
+    </tbody>
+</table>
