@@ -17,9 +17,12 @@ export class ProductService {
   El observable recibe el JSON que viene del backend
   pipe nos permite encadenar operadores RxJS como map, filter...
   map se encarga de transfromar todo el JSON a la parte que nos interesa que es response._embedded.products */
-  getProductList(): Observable<Product[]> {
+  getProductList(theCategoryId: number): Observable<Product[]> {
+    // URL dinámica en función del categoryId
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
+
     return this.httpClient
-      .get<GetResponse>(this.baseUrl)
+      .get<GetResponse>(searchUrl)
       .pipe(map((response) => response._embedded.products));
   }
 }
