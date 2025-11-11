@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 // Cuando el path matchea crea una nueva instancia del componente 'ProductListComponent'.
 export const routes: Routes = [
+    {path: 'products/:id', component: ProductDetailsComponent},
     {path: 'search/:keyword', component: ProductListComponent},
     //Pasamos el parámetro id de la URL (Path Variable) al componente
     {path: 'category/:id/:name', component: ProductListComponent},
