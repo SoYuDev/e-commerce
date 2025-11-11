@@ -46,6 +46,14 @@ export class ProductService {
       .get<GetResponseProduct>(searchUrl)
       .pipe(map((response) => response._embedded.products));
   }
+
+  // Obtiene un único producto.
+  getProduct(theProductId: number): Observable<Product> {
+    // Construir una URL a partir del id del producto
+    const productUrl = `${this.baseUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productUrl);
+  }
 }
 
 // Como la respuesta del servidor en JSON es más compleja al usar Spring Data REST usamos la interfaz creada GetResponseProduct
