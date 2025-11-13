@@ -54,6 +54,14 @@ export class ProductService {
 
     return this.httpClient.get<Product>(productUrl);
   }
+
+  // Obtiene un JSON con la paginación de Spring Data Rest
+  getProductListPaginate(thePage: number, thePageSize: number, theCategoryId: number): Observable<GetResponseProduct> {
+    // URL dinámica en función del categoryId, numero de página y tamaño.
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}` + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProduct>(searchUrl);
+  }
 }
 
 // Como la respuesta del servidor en JSON es más compleja al usar Spring Data REST usamos la interfaz creada GetResponseProduct
@@ -78,6 +86,13 @@ export class ProductService {
 interface GetResponseProduct {
   _embedded: {
     products: Product[];
+  };
+  // PAGINATION - Al añadir la paginación, SPRING DATA REST nos da metadatos en el JSON con la información que nos interesa unwrappear.
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
   };
 }
 
