@@ -14,8 +14,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   currentCategoryId: number = 1;
+  previousCategoryid: number = 1;
   currentCategoryName: string = '';
   searchMode: boolean = false;
+
+  // PAGINATION PROPERTIES
+  thePageNumber: number = 1;
+  thePageSize: number = 10;
+  theTotalElements: number = 0;
 
   // DI
   // ActivatedRoute nos permite acceder al route parameter que nos interesa (id)
@@ -45,9 +51,9 @@ export class ProductListComponent implements OnInit {
 
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
-    this._productService.searchProducts(theKeyword).subscribe(data => {
+    this._productService.searchProducts(theKeyword).subscribe((data) => {
       this.products = data;
-    })
+    });
   }
 
   handleListProducts() {
@@ -66,11 +72,24 @@ export class ProductListComponent implements OnInit {
       this.currentCategoryName = 'Books';
     }
 
-    // Obtener los productos específicos a partir del id obtenido
+    // Comprobamos si la categoría es diferente a la anterior para setear thePageNumber a 1
+    if (this.previousCategoryid != this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousCategoryid = this.currentCategoryId;
+
+    console.log(
+      `currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`
+    );
+
+    // Obtener la lista de productos con paginación, restamos -1 porque en Angular la paginación empieza en 1 y en Spring Boot en 0.
     this._productService
-      .getProductList(this.currentCategoryId)
+      .getProductListPaginate(this.thePageNumber - 1, this.thePageSize, this.currentCategoryId)
       .subscribe((data) => {
-        this.products = data;
+        this.products = data._embedded.products;
+        this.thePageNumber = data.page.number + 1;
+        this.thePageSize = data.page.size;
       });
   }
 }
