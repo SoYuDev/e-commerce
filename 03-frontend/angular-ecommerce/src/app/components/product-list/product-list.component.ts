@@ -3,11 +3,12 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../common/product';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgbPagination],
   templateUrl: './product-list-grid.component.html',
   styleUrls: ['./product-list.component.css'],
 })
@@ -90,6 +91,7 @@ export class ProductListComponent implements OnInit {
         this.products = data._embedded.products;
         this.thePageNumber = data.page.number + 1;
         this.thePageSize = data.page.size;
+        this.theTotalElements = data.page.totalElements;
       });
   }
 }
